@@ -1,14 +1,16 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-public class IntroductionFig1 : MonoBehaviour
+public class exerciseScripti1 : MonoBehaviour
 {
     //We need to create a walker
-    introMover walker;
+    myIntroMover walker;
 
     // Start is called before the first frame update
     void Start()
     {
-        walker = new introMover();
+        walker = new myIntroMover();
     }
 
     // Update is called once per frame
@@ -19,8 +21,7 @@ public class IntroductionFig1 : MonoBehaviour
     }
 }
 
-
-public class introMover
+public class myIntroMover
 {
     // The basic properties of a mover class
     private Vector3 location;
@@ -31,7 +32,7 @@ public class introMover
     // Gives the class a GameObject to draw on the screen
     public GameObject mover = GameObject.CreatePrimitive(PrimitiveType.Sphere);
 
-    public introMover()
+    public myIntroMover()
     {
         findWindowLimits();
         location = Vector2.zero;
@@ -42,29 +43,38 @@ public class introMover
 
     public void step()
     {
+
+        float num = Random.Range(0f, 1f);
+        Debug.Log(num);
         location = mover.transform.position;
         //Each frame choose a new Random number 0,1,2,3, 
         //If the number is equal to one of those values, take a step
-        int choice = Random.Range(0, 4);
-        if (choice == 0)
+     
+        if (num >= .6f)
         {
+            Debug.Log("Right");
             location.x++;
-
+            mover.transform.position += location * Time.deltaTime;
         }
-        else if (choice == 1)
+        else if (num >= .2f && num < .6f)
         {
-            location.x--;
+            Debug.Log("Down");
+            location.y--;
+            mover.transform.position += location * Time.deltaTime;
         }
-        else if (choice == 3)
+        else if (num >= .1f && num < .2f)
         {
+            Debug.Log("Up");
             location.y++;
+            mover.transform.position += location * Time.deltaTime;
         }
         else
         {
-            location.y--;
+            Debug.Log("Left");
+            location.x--;
+            mover.transform.position += location * Time.deltaTime;
         }
 
-        mover.transform.position += location * Time.deltaTime;
     }
 
     public void CheckEdges()
