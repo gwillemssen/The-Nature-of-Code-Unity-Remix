@@ -23,7 +23,7 @@ public class ecosystemCreature1Script : MonoBehaviour
 
         if(dir.magnitude > 2)
         {
-            mover.acceleration = mover.multiplyVector(mover.velocity, -1f);
+            mover.step();
         }
         else if (dir.magnitude < 2 && dir.magnitude > 1)
         {
@@ -37,6 +37,8 @@ public class ecosystemCreature1Script : MonoBehaviour
         mover.Update();
     }
 }
+
+
 
 public class creatureMover
 {
@@ -57,11 +59,56 @@ public class creatureMover
         location = Vector2.zero; // Vector2.zero is a (0, 0) vector
         velocity = Vector2.zero;
         acceleration = new Vector2(-0.1F, -1F);
-        topSpeed = 10;
+        topSpeed = 5;
 
         //We need to create a new material for WebGL
         Renderer r = mover.GetComponent<Renderer>();
         r.material = new Material(Shader.Find("Diffuse"));
+    }
+
+    public void step()
+    {
+
+        float num = Random.Range(0f, 1f);
+        Debug.Log(num);
+        Vector2 location = new Vector2(0, 0);
+        //Each frame choose a new Random number 0,1,2,3, 
+        //If the number is equal to one of those values, take a step
+        //Moving using velocity instead of position because using postion recursively moved sphere in direction of first vector
+
+        if (num < .25f)
+        {
+            Debug.Log("Right");
+            location.x++;
+            //this.location += location * Time.deltaTime;
+            location += velocity * Time.deltaTime * 2;
+            mover.transform.position = new Vector2(location.x, location.y);
+        }
+        else if (num >= .25f && num < .5f)
+        {
+            Debug.Log("Down");
+            location.y--;
+            //this.location += location * Time.deltaTime;
+            location += velocity * Time.deltaTime * 2;
+            mover.transform.position = new Vector2(location.x, location.y);
+        }
+        else if (num >= .5f && num < .75f)
+        {
+            Debug.Log("Up");
+            location.y++;
+            //this.location += location * Time.deltaTime;
+            location += velocity * Time.deltaTime * 2;
+            mover.transform.position = new Vector2(location.x, location.y);
+        }
+        else
+        {
+            Debug.Log("Left");
+            location.x--;
+            //this.location += location * Time.deltaTime;
+            location += velocity * Time.deltaTime * 2;
+            mover.transform.position = new Vector2(location.x, location.y);
+        }
+
     }
 
     public void Update()
