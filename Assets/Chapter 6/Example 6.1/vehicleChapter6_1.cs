@@ -59,6 +59,6 @@ public class vehicleChapter6_1 : MonoBehaviour
     //Receive a force, divide by mass, and add to acceleration
     public void applyForce(Vector3 force)
     {
-        body.AddForce(force * Time.fixedDeltaTime, ForceMode.VelocityChange);
+        body.AddForce(-force * Time.fixedDeltaTime, ForceMode.VelocityChange);
     }
 }
