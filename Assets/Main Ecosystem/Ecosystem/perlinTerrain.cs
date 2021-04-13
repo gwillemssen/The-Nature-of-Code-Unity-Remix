@@ -16,7 +16,15 @@ public class perlinTerrain : MonoBehaviour
         GameObject terrain = new GameObject();
         terrain.name = "terrain";
 
+        float xOff = 0;
+        for(int i = 0; i < cols; i++)
+        {
+            float yOff = 0;
+            for(int j = 0; j < rows; j++)
+            {
 
+            }
+        }
     }
 
     // Update is called once per frame
