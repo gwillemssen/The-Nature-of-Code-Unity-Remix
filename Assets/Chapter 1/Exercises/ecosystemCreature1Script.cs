@@ -5,17 +5,18 @@ using UnityEngine;
 public class ecosystemCreature1Script : MonoBehaviour
 {
     creatureMover mover;
+    //public GameObject charPos;
 
     // Start is called before the first frame update
     void Start()
     {
         mover = new creatureMover();
-
     }
 
     // Update is called once per frame
     void Update()
     {
+        //Vector3 dir = mover.subtractVectors(charPos.position, mover.location);
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 dir = mover.subtractVectors(mousePos, mover.location);
         mover.acceleration = mover.multiplyVector(dir.normalized, (-1/dir.magnitude));

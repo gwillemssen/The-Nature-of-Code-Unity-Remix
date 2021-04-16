@@ -223,6 +223,7 @@ GameObject:
   m_Component:
   - component: {fileID: 959271128}
   - component: {fileID: 959271127}
+  - component: {fileID: 959271129}
   m_Layer: 0
   m_Name: Scripts
   m_TagString: Untagged
@@ -268,6 +269,39 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &959271129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 959271126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 197203bb81769e7419de543611efdfc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chapterOneCreatures: []
+  chapterOneCreature: {fileID: 1558750644283082266, guid: 2950025266ef2fe45a42fa9207531f23,
+    type: 3}
+  chapterOneCreaturePopulation: 15
+  chapterTwoCreatures: []
+  chapterTwoCreature: {fileID: 0}
+  chapterTwoCreaturePopulation: 0
+  chapterThreeCreatures: []
+  chapterThreeCreature: {fileID: 0}
+  chapterThreeCreaturePopulation: 0
+  chapterSixCreatures: []
+  chapterSixCreature: {fileID: 0}
+  chapterSixCreaturePopulation: 0
+  chapterSevenCreatures: []
+  chapterSevenCreature: {fileID: 0}
+  chapterSevenCreaturePopulation: 0
+  chapterEightCreatures: []
+  chapterEightCreature: {fileID: 0}
+  chapterEightCreaturePopulation: 0
+  terrain: {fileID: 959271127}
+  terrainMin: 10
 --- !u!1001 &1179564181
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -322,6 +356,10 @@ PrefabInstance:
     - target: {fileID: 400000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 3}
