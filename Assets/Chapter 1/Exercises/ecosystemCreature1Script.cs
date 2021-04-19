@@ -5,12 +5,12 @@ using UnityEngine;
 public class ecosystemCreature1Script : MonoBehaviour
 {
     creatureMover mover;
-    //public GameObject charPos;
 
     // Start is called before the first frame update
     void Start()
     {
         mover = new creatureMover();
+        StartCoroutine(timer());
     }
 
     // Update is called once per frame
@@ -19,14 +19,10 @@ public class ecosystemCreature1Script : MonoBehaviour
         //Vector3 dir = mover.subtractVectors(charPos.position, mover.location);
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 dir = mover.subtractVectors(mousePos, mover.location);
-        mover.acceleration = mover.multiplyVector(dir.normalized, (-1/dir.magnitude));
-        //mover.Update();
+        mover.acceleration = mover.multiplyVector(dir.normalized, (-1 / dir.magnitude));
 
-        if (dir.magnitude > 5)
-        {
-            mover.step();
-        }
-        else if (dir.magnitude < 5 && dir.magnitude > 2)
+       
+        if (dir.magnitude < 5 && dir.magnitude > 2)
         {
             mover.acceleration = mover.multiplyVector(dir.normalized, -2f);
             if (dir.magnitude > 5)
@@ -47,9 +43,19 @@ public class ecosystemCreature1Script : MonoBehaviour
 
         mover.Update();
     }
+    public IEnumerator timer()
+    {
+        yield return new WaitForSeconds(3);
+        StartCoroutine(mover.newStep());
+        StartCoroutine(timer2());
+    }
+
+    public IEnumerator timer2()
+    {
+        yield return new WaitForSeconds(3);
+        StartCoroutine(timer());
+    }
 }
-
-
 
 public class creatureMover
 {
@@ -77,56 +83,15 @@ public class creatureMover
         r.material = new Material(Shader.Find("Diffuse"));
     }
 
-    public void step()
+    public IEnumerator newStep()
     {
-        findWindowLimits();
-        Vector2 location = new Vector2(0, 0);
+        yield return new WaitForSeconds(10);
+        location = mover.transform.position;
         velocity = new Vector2(Random.Range(-2f, 2f), Random.Range(-2f, 2f));
         location += velocity * Time.deltaTime; // Time.deltaTime is the time passed since the last frame.
 
         // Updates the GameObject of this movement
         mover.transform.position = new Vector2(location.x, location.y);
-
-        //float num = Random.Range(0f, 1f);
-        //Debug.Log(num);
-        
-        //Each frame choose a new Random number 0,1,2,3, 
-        //If the number is equal to one of those values, take a step
-        //Moving using velocity instead of position because using postion recursively moved sphere in direction of first vector
-
-        //if (num < .25f)
-        //{
-        //    Debug.Log("Right");
-        //    location.x++;
-        //    //this.location += location * Time.deltaTime;
-        //    velocity += location * Time.deltaTime * 2;
-        //    mover.transform.position = new Vector2(location.x, location.y);
-        //}
-        //else if (num >= .25f && num < .5f)
-        //{
-        //    Debug.Log("Down");
-        //    location.y--;
-        //    //this.location += location * Time.deltaTime;
-        //    velocity += location * Time.deltaTime * 2;
-        //    mover.transform.position = new Vector2(location.x, location.y);
-        //}
-        //else if (num >= .5f && num < .75f)
-        //{
-        //    Debug.Log("Up");
-        //    location.y++;
-        //    //this.location += location * Time.deltaTime;
-        //    velocity += location * Time.deltaTime * 2;
-        //    mover.transform.position = new Vector2(location.x, location.y);
-        //}
-        //else
-        //{
-        //    Debug.Log("Left");
-        //    location.x--;
-        //    //this.location += location * Time.deltaTime;
-        //    velocity += location * Time.deltaTime * 2;
-        //    mover.transform.position = new Vector2(location.x, location.y);
-        //}
-
     }
 
     public void Update()
