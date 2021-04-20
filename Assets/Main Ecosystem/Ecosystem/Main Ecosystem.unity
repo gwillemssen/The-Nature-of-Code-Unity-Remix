@@ -284,13 +284,15 @@ MonoBehaviour:
   chapterOneCreatures: []
   chapterOneCreature: {fileID: 1558750644283082266, guid: 2950025266ef2fe45a42fa9207531f23,
     type: 3}
-  chapterOneCreaturePopulation: 15
+  chapterOneCreaturePopulation: 30
   chapterTwoCreatures: []
-  chapterTwoCreature: {fileID: 0}
-  chapterTwoCreaturePopulation: 0
+  chapterTwoCreature: {fileID: 7260721053420482721, guid: 47d203b6b0d9cd94c85ed1a42cff40ab,
+    type: 3}
+  chapterTwoCreaturePopulation: 2
   chapterThreeCreatures: []
-  chapterThreeCreature: {fileID: 0}
-  chapterThreeCreaturePopulation: 0
+  chapterThreeCreature: {fileID: 2045917345254799143, guid: d33046f7143926a46bc5f70451110cdf,
+    type: 3}
+  chapterThreeCreaturePopulation: 5
   chapterSixCreatures: []
   chapterSixCreature: {fileID: 0}
   chapterSixCreaturePopulation: 0
@@ -312,6 +314,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 3}
       propertyPath: m_Name
       value: FPSController
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 3}
       propertyPath: m_LocalPosition.x

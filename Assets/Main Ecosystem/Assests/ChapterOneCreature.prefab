@@ -425,11 +425,11 @@ MonoBehaviour:
   location: {x: 0, y: 0, z: 0}
   velocity: {x: 0, y: 0, z: 0}
   acceleration: {x: 0, y: 0, z: 0}
-  minX: 0
+  minX: 10
   maxX: 99
-  minY: 3
+  minY: 10
   maxY: 25
-  minZ: 0
+  minZ: 10
   maxZ: 99
 --- !u!1 &1558750644338020228
 GameObject:

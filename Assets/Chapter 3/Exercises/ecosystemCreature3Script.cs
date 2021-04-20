@@ -5,12 +5,15 @@ using UnityEngine;
 public class ecosystemCreature3Script : MonoBehaviour
 {
     List<oscillatorWings> oscilattors = new List<oscillatorWings>();
-
+    oscillatorBody ob;
     void Start()
     {
+        ob = new oscillatorBody();
         while (oscilattors.Count < 2)
         {
-            oscilattors.Add(new oscillatorWings());
+            oscillatorWings o = new oscillatorWings();
+            o.oGameObject.transform.SetParent(ob.body.transform);
+            oscilattors.Add(o);
         }
         oscilattors[1].setAmplitude(new Vector2(8f, -3));
     }
@@ -18,6 +21,7 @@ public class ecosystemCreature3Script : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        ob.Update();
         foreach (oscillatorWings o in oscilattors)
         {
             //Each oscillator object oscillating on the x-axis
@@ -27,6 +31,7 @@ public class ecosystemCreature3Script : MonoBehaviour
             //Add the oscillator's velocity to its angle
             o.angle += o.velocity;
             // Draw the line for each oscillator
+            o.lineRender.SetPosition(0, ob.body.transform.position);
             o.lineRender.SetPosition(1, o.oGameObject.transform.position);
             //Move the oscillator
             o.oGameObject.transform.transform.Translate(new Vector2(x, y) * Time.deltaTime);
@@ -34,6 +39,108 @@ public class ecosystemCreature3Script : MonoBehaviour
         
     }
 }
+
+public class oscillatorBody
+{
+    public Vector3 velocity, acceleration, location;
+    public GameObject body;
+    public float topSpeed;
+    public float minX, maxX, minY, maxY, minZ, maxZ;
+
+    public oscillatorBody()
+    {
+        body = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        location = this.body.transform.position;
+        velocity = new Vector3(0.1F, 0, 1F);
+        acceleration = new Vector3(0.1F, 0, 1F);
+        topSpeed = 5;
+        minX = 10f;
+        maxX = 99f;
+        minY = 7f;
+        maxY = 20f;
+        minZ = 10f;
+        maxZ = 99f;
+    }
+
+    public void Update()
+    {
+        checkEdges();
+        Move();
+        //Debug.Log(location + ""+"" + velocity + ""+"" + acceleration);
+    }
+
+    public void Move()
+    {
+        location = this.body.transform.position;
+
+        if (velocity.magnitude <= topSpeed)
+        {
+            // Speeds up the mover
+            velocity += acceleration * Time.deltaTime;
+
+            // Limit Velocity to the top speed
+            velocity = Vector3.ClampMagnitude(velocity, topSpeed);
+
+            // Moves the mover
+            location += velocity * Time.deltaTime;
+
+            // Updates the GameObject of this movement
+            this.body.transform.position = new Vector3(location.x, location.y, location.z);
+
+        }
+        else
+        {
+            velocity -= acceleration * Time.deltaTime;
+            location += velocity * Time.deltaTime;
+            this.body.transform.position = new Vector3(location.x, location.y, location.z);
+        }
+    }
+
+    void checkEdges()
+    {
+        location = this.body.transform.position;
+
+        if (location.x >= maxX)
+        {
+            location.x = minX + 1;
+            //acceleration = Vector3.zero;
+            //velocity = Vector3.zero;
+        }
+        else if (location.x <= minX)
+        {
+            location.x += maxX - minX;
+            //acceleration = Vector3.zero;
+            //velocity = Vector3.zero;
+        }
+        if (location.y >= maxY)
+        {
+            location.y = minY + 1;
+            //acceleration = Vector3.zero;
+            //velocity = Vector3.zero;
+        }
+        else if (location.y <= minY)
+        {
+            location.y += maxY - minY;
+            //acceleration = Vector3.zero;
+            //velocity = Vector3.zero;
+        }
+        if (location.z >= maxZ)
+        {
+            location.z -= maxZ - minZ;
+            //acceleration = Vector3.zero;
+            //velocity = Vector3.zero;
+        }
+        else if (location.z <= minZ)
+        {
+            location.z += maxZ - minZ;
+            //acceleration = Vector3.zero;
+            //velocity = Vector3.zero;
+        }
+
+        this.body.transform.position = location;
+    }
+}
+
 
 public class oscillatorWings
 {
@@ -52,7 +159,7 @@ public class oscillatorWings
 
     public oscillatorWings()
     {
-        findWindowLimits();
+        //findWindowLimits();
         angle = Vector2.zero;
         velocity = new Vector2(.08f, .08f);
         amplitude = new Vector2(-8f, -3f);
@@ -77,11 +184,11 @@ public class oscillatorWings
         this.amplitude = ampValue;
     }
 
-    private void findWindowLimits()
-    {
-        // We want to start by setting the camera's projection to Orthographic mode
-        Camera.main.orthographic = true;
-        // Next we grab the minimum and maximum position for the screen
-        maximumPos = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
-    }
+    //private void findWindowLimits()
+    //{
+    //    // We want to start by setting the camera's projection to Orthographic mode
+    //    Camera.main.orthographic = true;
+    //    // Next we grab the minimum and maximum position for the screen
+    //    maximumPos = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
+    //}
 }

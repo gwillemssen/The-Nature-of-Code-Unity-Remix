@@ -9,9 +9,12 @@ public class chapterOneCreatureScript : MonoBehaviour
 
     public float minX, maxX, minY, maxY, minZ, maxZ;
 
+    GameObject player;
+
     // Start is called before the first frame update
     void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
         location = this.gameObject.transform.position;
         velocity = Vector3.zero;
         acceleration = new Vector3(-0.1F, 0, -1F);
@@ -21,14 +24,15 @@ public class chapterOneCreatureScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3 dir = this.subtractVectors(mousePos, this.location);
+        checkEdges();
+        Vector3 playerPos = player.transform.position;
+        Vector3 dir = this.subtractVectors(playerPos, this.location);
         this.acceleration = this.multiplyVector(dir.normalized, (-1 / dir.magnitude));
         //mover.Update();
 
         if (dir.magnitude > 5)
         {
-            this.step();
+            //this.step();
         }
         else if (dir.magnitude < 5 && dir.magnitude > 2)
         {
@@ -49,7 +53,7 @@ public class chapterOneCreatureScript : MonoBehaviour
             }
         }
 
-        checkEdges();
+        
         this.Move();
     }
 
@@ -66,6 +70,8 @@ public class chapterOneCreatureScript : MonoBehaviour
 
     public void Move()
     {
+        location = this.gameObject.transform.position;
+
         if (velocity.magnitude <= topSpeed)
         {
             // Speeds up the mover
@@ -91,42 +97,46 @@ public class chapterOneCreatureScript : MonoBehaviour
 
     void checkEdges()
     {
-        if (location.x > maxX)
+        location = this.gameObject.transform.position;
+
+        if (location.x >= maxX)
         {
-            location.x -= maxX - minX;
+            location.x = minX + 1;
             acceleration = Vector3.zero;
             velocity = Vector3.zero;
         }
-        else if (location.x < minX)
+        else if (location.x <= minX)
         {
             location.x += maxX - minX;
             acceleration = Vector3.zero;
             velocity = Vector3.zero;
         }
-        if (location.y > maxY)
+        if (location.y >= maxY)
         {
-            location.y -= maxY - minY;
+            location.y = minY + 1;
             acceleration = Vector3.zero;
             velocity = Vector3.zero;
         }
-        else if (location.y < minY)
+        else if (location.y <= minY)
         {
             location.y += maxY - minY;
             acceleration = Vector3.zero;
             velocity = Vector3.zero;
         }
-        if (location.z > maxZ)
+        if (location.z >= maxZ)
         {
             location.z -= maxZ - minZ;
             acceleration = Vector3.zero;
             velocity = Vector3.zero;
         }
-        else if (location.z < minZ)
+        else if (location.z <= minZ)
         {
             location.z += maxZ - minZ;
             acceleration = Vector3.zero;
             velocity = Vector3.zero;
         }
+
+        this.gameObject.transform.position = location;
     }
 
     // This method calculates A - B component wise

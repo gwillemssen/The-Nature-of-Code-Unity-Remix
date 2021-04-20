@@ -11,15 +11,17 @@ public class ecosystemCreature2Script : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        a = new myAttractor();
+        a.attractor.transform.position = new Vector3(Random.Range(10f, 100f), Random.Range(7f, 15f), Random.Range(10f, 100f));
         int numberOfMovers = 10;
         for (int i = 0; i < numberOfMovers; i++)
         {
-            Vector2 randomLocation = new Vector2(Random.Range(-7f, 7f), Random.Range(-7f, 7f));
-            Vector2 randomVelocity = new Vector2(Random.Range(0f, 1f), Random.Range(0f, 1f));
-            myMover2 m = new myMover2(Random.Range(0.2f, 1f), randomVelocity, randomLocation); //Each Mover is initialized randomly.
+            Vector3 randomLocation = new Vector3((a.attractor.transform.position.x + Random.Range(-7f, 7f)), (a.attractor.transform.position.y + Random.Range(-7f, 7f)), (a.attractor.transform.position.z + Random.Range(-7f, 7f)));
+            Vector3 randomVelocity = new Vector3(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
+            myMover2 m = new myMover2(Random.Range(0.2f, 1f), randomVelocity, randomLocation, a.attractor); //Each Mover is initialized randomly.
             movers.Add(m);
         }
-        a = new myAttractor();
+        
     }
 
     // Update is called once per frame
@@ -27,13 +29,23 @@ public class ecosystemCreature2Script : MonoBehaviour
     {
         foreach (myMover2 m in movers)
         {
-            m.body.AddForce(wind, ForceMode.Impulse);
+            float distance = Vector3.Distance(a.body.position, m.body.position);
+
+            if (distance < 4)
+            {
+                m.body.AddForce(wind, ForceMode.Impulse);
+            }
+            else
+            {
+                m.body.AddForce(-wind * 0, ForceMode.Impulse);
+            }
 
             Rigidbody body = m.body;
-            Vector2 force = a.Attract(body); // Apply the attraction from the Attractor on each Mover object
+            Vector3 force = a.Attract(body); // Apply the attraction from the Attractor on each Mover object
 
             m.ApplyForce(force);
             m.Update();
+            Debug.Log("distance:" + distance);
         }
     }
 }
@@ -41,10 +53,10 @@ public class ecosystemCreature2Script : MonoBehaviour
 public class myAttractor
 {
     public float mass;
-    private Vector2 location;
+    private Vector3 location;
     private float G;
     public Rigidbody body;
-    private GameObject attractor;
+    public GameObject attractor;
     private float radius;
 
     public myAttractor()
@@ -53,7 +65,7 @@ public class myAttractor
         GameObject.Destroy(attractor.GetComponent<SphereCollider>());
         Renderer renderer = attractor.GetComponent<Renderer>();
         body = attractor.AddComponent<Rigidbody>();
-        body.position = Vector2.zero;
+        body.position = attractor.transform.position;
 
         // Generate a radius
         radius = 1;
@@ -79,9 +91,9 @@ public class myAttractor
         G = 9.8f;
     }
 
-    public Vector2 Attract(Rigidbody m)
+    public Vector3 Attract(Rigidbody m)
     {
-        Vector2 force = body.position - m.position;
+        Vector3 force = body.position - m.position;
         float distance = force.magnitude;
 
         // Remember we need to constrain the distance so that our circle doesn't spin out of control
@@ -100,13 +112,16 @@ public class myMover2
     public Transform transform;
     public Rigidbody body;
 
-    private Vector2 minimumPos, maximumPos;
+    private Vector3 minimumPos, maximumPos;
 
     private GameObject mover;
 
-    public myMover2(float randomMass, Vector2 initialVelocity, Vector2 initialPosition)
+    private GameObject attractor;
+
+    public myMover2(float randomMass, Vector3 initialVelocity, Vector3 initialPosition, GameObject a)
     {
         mover = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        attractor = a;
         GameObject.Destroy(mover.GetComponent<SphereCollider>());
         transform = mover.transform;
         mover.AddComponent<Rigidbody>();
@@ -119,15 +134,13 @@ public class myMover2
         body.mass = 1;
         body.position = initialPosition; // Default location
         body.velocity = initialVelocity; // The extra velocity makes the mover orbit
-        findWindowLimits();
-
-
-
-
+        //findWindowLimits();
+        minimumPos = new Vector3(a.transform.position.x - 10, a.transform.position.y - 10, a.transform.position.z - 10);
+        maximumPos = new Vector3(a.transform.position.x + 10, a.transform.position.y + 10, a.transform.position.z + 10); 
 
     }
 
-    public void ApplyForce(Vector2 force)
+    public void ApplyForce(Vector3 force)
     {
         body.AddForce(force, ForceMode.Force);
     }
@@ -139,7 +152,7 @@ public class myMover2
 
     public void CheckEdges()
     {
-        Vector2 velocity = body.velocity;
+        Vector3 velocity = body.velocity;
         if (transform.position.x > maximumPos.x || transform.position.x < minimumPos.x)
         {
             velocity.x *= -1 * Time.deltaTime;
@@ -148,14 +161,18 @@ public class myMover2
         {
             velocity.y *= -1 * Time.deltaTime;
         }
+        if (transform.position.z > maximumPos.z || transform.position.z < minimumPos.z)
+        {
+            velocity.z *= -1 * Time.deltaTime;
+        }
         body.velocity = velocity;
     }
 
-    private void findWindowLimits()
-    {
-        Camera.main.orthographic = true;
-        Camera.main.orthographicSize = 10;
-        minimumPos = Camera.main.ScreenToWorldPoint(Vector2.zero);
-        maximumPos = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
-    }
+    //private void findWindowLimits()
+    //{
+    //    Camera.main.orthographic = true;
+    //    Camera.main.orthographicSize = 10;
+    //    minimumPos = Camera.main.ScreenToWorldPoint(Vector2.zero);
+    //    maximumPos = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
+    //}
 }

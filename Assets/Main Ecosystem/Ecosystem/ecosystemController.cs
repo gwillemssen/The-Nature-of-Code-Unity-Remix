@@ -48,8 +48,18 @@ public class ecosystemController : MonoBehaviour
         //chapter one creature spawn
         for (int i = 0; i < chapterOneCreaturePopulation; i++)
         {
-            chapterOneCreature = Instantiate(chapterOneCreature, new Vector3(Random.Range(terrainMin, terrain.cols), Random.Range(10f, 20f), Random.Range(terrainMin, terrain.rows)), Quaternion.identity);
-            chapterOneCreatures.Add(chapterOneCreature);
+            GameObject chapterOneC = Instantiate(chapterOneCreature, new Vector3(Random.Range(terrainMin, terrain.cols), Random.Range(10f, 20f), Random.Range(terrainMin, terrain.rows)), Quaternion.identity);
+            chapterOneCreatures.Add(chapterOneC);
+        }
+        for (int i = 0; i < chapterTwoCreaturePopulation; i++)
+        {
+            GameObject chapterTwoC = Instantiate(chapterTwoCreature, new Vector3(Random.Range(terrainMin, terrain.cols), Random.Range(10f, 20f), Random.Range(terrainMin, terrain.rows)), Quaternion.identity);
+            chapterTwoCreatures.Add(chapterTwoC);
+        }
+        for (int i = 0; i < chapterThreeCreaturePopulation; i++)
+        {
+            GameObject chapterThreeC = Instantiate(chapterThreeCreature, new Vector3(Random.Range(terrainMin, terrain.cols), Random.Range(10f, 20f), Random.Range(terrainMin, terrain.rows)), Quaternion.identity);
+            chapterThreeCreatures.Add(chapterThreeC);
         }
     }
 
