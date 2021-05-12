@@ -4,15 +4,24 @@ using UnityEngine;
 
 public class ecosystemCreature2Script : MonoBehaviour
 {
+    //public GameObject goAttractor;
+
     List<myMover2> movers = new List<myMover2>(); // Now we have multiple Movers!
     myAttractor a;
     private Vector3 wind = new Vector3(0.05f, 0f, 0f);
 
+    GameObject dragonFly;
+    GameObject player;
+
     // Start is called before the first frame update
     void Start()
     {
+        dragonFly = GameObject.FindGameObjectWithTag("dragonFly");
+        player = GameObject.FindGameObjectWithTag("Player");
+
         a = new myAttractor();
-        a.attractor.transform.position = new Vector3(Random.Range(10f, 100f), Random.Range(7f, 15f), Random.Range(10f, 100f));
+        a.attractor.name = "flower";
+        a.attractor.transform.position = new Vector3(Random.Range(10f, 100f), Random.Range(15f, 20f), Random.Range(10f, 100f));
         int numberOfMovers = 10;
         for (int i = 0; i < numberOfMovers; i++)
         {
@@ -40,6 +49,13 @@ public class ecosystemCreature2Script : MonoBehaviour
                 m.body.AddForce(-wind * 0, ForceMode.Impulse);
             }
 
+            Vector3 dragonPos = dragonFly.transform.position;
+            Vector3 dir = this.subtractVectors(dragonPos, m.body.position);
+            if (dir.magnitude < 5)
+            {
+                m.body.velocity = Vector3.zero;
+            }
+
             Rigidbody body = m.body;
             Vector3 force = a.Attract(body); // Apply the attraction from the Attractor on each Mover object
 
@@ -47,6 +63,13 @@ public class ecosystemCreature2Script : MonoBehaviour
             m.Update();
             Debug.Log("distance:" + distance);
         }
+    }
+
+    public Vector2 subtractVectors(Vector2 vectorA, Vector2 vectorB)
+    {
+        float newX = vectorA.x - vectorB.x;
+        float newY = vectorA.y - vectorB.y;
+        return new Vector2(newX, newY);
     }
 }
 
@@ -57,6 +80,7 @@ public class myAttractor
     private float G;
     public Rigidbody body;
     public GameObject attractor;
+
     private float radius;
 
     public myAttractor()

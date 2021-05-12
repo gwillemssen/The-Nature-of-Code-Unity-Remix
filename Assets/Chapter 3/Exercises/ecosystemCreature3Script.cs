@@ -56,7 +56,7 @@ public class oscillatorBody
         topSpeed = 5;
         minX = 10f;
         maxX = 99f;
-        minY = 7f;
+        minY = 10f;
         maxY = 20f;
         minZ = 10f;
         maxZ = 99f;

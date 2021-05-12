@@ -61,6 +61,16 @@ public class ecosystemController : MonoBehaviour
             GameObject chapterThreeC = Instantiate(chapterThreeCreature, new Vector3(Random.Range(terrainMin, terrain.cols), Random.Range(10f, 20f), Random.Range(terrainMin, terrain.rows)), Quaternion.identity);
             chapterThreeCreatures.Add(chapterThreeC);
         }
+        for (int i = 0; i < chapterSixCreaturePopulation; i++)
+        {
+            GameObject chapterSixC = Instantiate(chapterSixCreature, new Vector3(Random.Range(terrainMin, terrain.cols), Random.Range(10f, 20f), Random.Range(terrainMin, terrain.rows)), Quaternion.identity);
+            chapterSixCreatures.Add(chapterSixC);
+        }
+        for (int i = 0; i < chapterSevenCreaturePopulation; i++)
+        {
+            GameObject chapterSevenC = Instantiate(chapterSevenCreature, new Vector3(Random.Range(terrainMin, terrain.cols), Random.Range(10f, 20f), Random.Range(terrainMin, terrain.rows)), Quaternion.identity);
+            chapterSevenCreatures.Add(chapterSevenC);
+        }
     }
 
     // Update is called once per frame
